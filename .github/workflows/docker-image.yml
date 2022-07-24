@@ -12,6 +12,8 @@ jobs:
     - name: Build and Push Docker image
       run: |
         TAG=$(git describe --tags --abbrev=0)
-        docker build . --file Dockerfile --tag ghcr.io/nickpatton/some-dancing-bears:$TAG
         echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u nickpatton --password-stdin
-        docker push ghcr.io/nickpatton/some-dancing-bears:$TAG
+        docker buildx create --name bearBuilder
+        docker buildx use bearBuilder
+        docker buildx inspect --bootstrap
+        docker buildx build --push --tag ghcr.io/nickpatton/some-dancing-bears:$TAG --platform=linux/arm64,linux/amd64 .
