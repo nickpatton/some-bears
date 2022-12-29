@@ -1,12 +1,10 @@
-FROM python:slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY app.py .
-COPY bears.txt .
-COPY requirements.txt .
+COPY app/ .
 
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-CMD python app.py
+CMD python bears.py

@@ -5,7 +5,9 @@ Throughout my time as an infrastructure engineer, I've always had a need for a s
 It's a stupidly simple python/flask app that returns an emedded link to a random gif of a bear.
 
 ## how do I run it?
-```python app.py```
+```cd app/```
+
+```python bears.py```
 
 The app can be accessed locally:
 ```localhost:5000```
