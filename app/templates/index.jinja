@@ -8,11 +8,28 @@
     <link rel="stylesheet" href="/static/main.css">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <title>Some Bears...</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#refresh-button').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/refresh_bear',
+                    success: function (response) {
+                        $('#bear').html(response);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
-    <div>
-        <img src={{ gif_link }} />
+    <div class="container">
+        <div id="bear">
+            <img class="image" src={{ gif_link }} />
+        </div>
+        <button id="refresh-button">refresh bear</button>
     </div>
 </body>
 

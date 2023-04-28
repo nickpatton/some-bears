@@ -23,6 +23,12 @@ def index():
     return render_template('index.jinja', gif_link=gif_link)
 
 
+@app.route('/refresh_bear', methods=['POST'])
+def refresh_bear():
+    gif_link = fetch_a_bear()
+    return f"<img src={gif_link} />"
+
+
 @app.route('/health', methods=['GET'])
 def health():
     return "Hi Shawn!!", 200
