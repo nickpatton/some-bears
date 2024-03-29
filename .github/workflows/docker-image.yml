@@ -12,12 +12,12 @@ jobs:
       - name: Build Docker image
         run: |
           TAG=$(git describe --tags --abbrev=0)
-          docker build . --file Dockerfile --tag ghcr.io/nickpatton/some-dancing-bears:$TAG
+          docker build . --file Dockerfile --tag ghcr.io/nickpatton/some-dancing-bears:$TAG --tag ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "ghcr.io/nickpatton/some-dancing-bears:$TAG"
+          image-ref: "ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }}"
           format: "sarif"
           output: "trivy-results.sarif"
 
