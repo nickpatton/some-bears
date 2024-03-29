@@ -28,5 +28,6 @@ jobs:
 
       - name: Push Docker image
         run: |
+          TAG=$(git describe --tags --abbrev=0)
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u nickpatton --password-stdin
           docker push ghcr.io/nickpatton/some-dancing-bears:$TAG
