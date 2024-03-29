@@ -13,30 +13,30 @@ class InvalidBearFood(Exception):
     pass
 
 def fetch_a_bear():
-    lines = open('bears.txt').read().splitlines()
-    return random.choice(lines)
+    bear_gif_links = open('bears.txt').read().splitlines()
+    return random.choice(bear_gif_links)
 
 @app.route('/', methods=['GET'])
 def index():
     gif_link = fetch_a_bear()
-    logger.info("Rendering bear: %s", gif_link)
     return render_template('index.jinja', gif_link=gif_link)
 
 @app.route('/refresh_bear', methods=['POST'])
 def refresh_bear():
     gif_link = fetch_a_bear()
+    logger.info("rendering bear gif: %s", gif_link)
     return f"<img src={gif_link} />"
 
 @app.route('/health', methods=['GET'])
 def health():
-    return "Hi Shawn!!", 200
+    return "Hi Bear!!", 200
 
 # Test DNS resolution/ability to connect to an external endpoint
 @app.route('/external_request', methods=['GET'])
 def external_request():
     response = requests.get(
         "https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd&ids=bitcoin")
-    logger.info("Response code from CoinGecko: %s", response.status_code)
+    logger.info("response code from CoinGecko: %s", response.status_code)
     return response.json(), response.status_code
 
 @app.route('/exception', methods=['GET'])
