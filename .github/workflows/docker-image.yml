@@ -17,18 +17,18 @@ jobs:
           docker build . --file Dockerfile --tag ghcr.io/nickpatton/some-dancing-bears:$TAG --tag ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }}
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.19.0
         with:
-          scan-type: "image"
-          image-ref: "ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }}"
-          format: "sarif"
+          image-ref: "docker.io/my-organization/my-app:${{ github.sha }}"
+          format: "template"
+          template: "@/contrib/sarif.tpl"
           output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH"
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: "trivy-results.sarif"
-          category: "image"
 
       - name: Push Docker image
         run: |
