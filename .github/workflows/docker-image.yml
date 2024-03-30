@@ -21,8 +21,10 @@ jobs:
           echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
           sudo apt-get install trivy
+          trivy --version
           trivy image --format sarif -o trivy-results.sarif ghcr.io/nickpatton/some-dancing-bears:$TAG --scanners vuln
           ls -lah
+          cat trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
