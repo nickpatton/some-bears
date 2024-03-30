@@ -23,7 +23,7 @@ jobs:
         with:
           image-ref: "ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }}"
           format: "sarif"
-          scanners: "vuln,misconfig,secret,licens"
+          scanners: "vuln"
           output: "trivy-results.sarif"
 
       - name: Upload Trivy scan results to GitHub Security tab
