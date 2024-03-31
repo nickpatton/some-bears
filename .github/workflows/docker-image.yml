@@ -21,10 +21,10 @@ jobs:
           docker build . --file Dockerfile --tag ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }} .
 
       - name: Trivy Scan
-        uses: aquasecurity/trivy-action@v0.19.0
+        uses: aquasecurity/trivy-action@0.19.0
         with:
           image-ref: "ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }}"
-          format: "template"
+          format: "sarif"
           template: "@/contrib/sarif.tpl"
           output: "trivy-results.sarif"
           severity: "CRITICAL,HIGH"
