@@ -1,4 +1,4 @@
-name: Build, Scan, and Push Docker Image
+name: Build and Push Docker Image
 
 on:
   release:
@@ -6,36 +6,15 @@ on:
 
 jobs:
   build:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    name: Build
+    name: Build and Push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Build Image
+      - name: Build and Push Image
         run: |
-          docker build --tag ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }} .
-
-      - name: Trivy Scan
-        uses: aquasecurity/trivy-action@0.19.0
-        with:
-          image-ref: "ghcr.io/nickpatton/some-dancing-bears:${{ github.sha }}"
-          format: "sarif"
-          template: "@/contrib/sarif.tpl"
-          output: "trivy-results.sarif"
-          severity: "CRITICAL,HIGH"
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: "trivy-results.sarif"
-
-      # - name: Push Docker image
-      #   run: |
-      #     TAG=$(git describe --tags --abbrev=0)
-      #     echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u nickpatton --password-stdin
-      #     docker push ghcr.io/nickpatton/some-dancing-bears:$TAG
+          TAG=$(git describe --tags --abbrev=0)
+          docker build --tag ghcr.io/nickpatton/some-dancing-bears:$TAG .
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u nickpatton --password-stdin
+          docker push ghcr.io/nickpatton/some-dancing-bears:$TAG
